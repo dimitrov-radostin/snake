@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Snake</title>
+</head>
+<body style="display: flex; align-items: center; justify-content: center">
+    <canvas id="canv" width="400" height="400" />
+
+    <script>
+        const canv = document.getElementById('canv')
+        const ctx = canv.getContext('2d')
+        
+        const PIXEL_SIZE = 10 
+        let [speed_X, speed_Y] = [0, 0] 
+        let snake = Array(5).fill([20, 20])
+        let apple
+
+        document.addEventListener("keydown", keydown)
+        game()
+        setInterval(game, 1000 / 15)
+        
+        function keydown(e){
+            switch (e.keyCode) {
+                case 37:
+                    speed_Y = -1
+                    speed_X = 0
+                    break;
+                case 38:
+                    speed_Y = 0
+                    speed_X = -1
+                    break;
+                case 39:
+                    speed_Y = 1
+                    speed_X = 0
+                    break;
+                case 40:
+                    speed_Y = 0
+                    speed_X = 1
+                    break;
+            }
+        }
+
+        function game () {
+            ctx.fillStyle = 'black'
+            ctx.fillRect(0, 0, 400, 400)
+            
+            if (!apple){
+                apple = [Math.floor(Math.random()*40), Math.floor(Math.random()*40)]
+            }
+            ctx.fillStyle = 'green'
+            ctx.fillRect(apple[0] * PIXEL_SIZE, apple[1] * PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE)
+            
+            let newHeadPosition = [
+                snake[0][0] + speed_Y,
+                snake[0][1] + speed_X
+            ]  
+            newHeadPosition = newHeadPosition.map(coordinate => {
+                if (coordinate < 0) {
+                    return 40
+                }
+                if (coordinate >= 40) {
+                    return 0
+                }
+                return coordinate
+            })
+
+            if ((speed_X !== 0 ||
+                speed_Y !== 0) &&
+                snake.some(
+                ([x, y]) => (
+                    x === newHeadPosition[0] &&
+                    y === newHeadPosition[1]
+                )
+            )) {
+                alert("you  lose")
+                snake = Array(5).fill([20, 20])
+                speed_X = 0
+                speed_Y = 0
+                history.pushState('', '', location.href.replace(/@/g, ''));
+                return
+            }
+
+            snake.unshift(newHeadPosition)
+
+            if(
+                newHeadPosition[0] === apple[0] &&
+                newHeadPosition[1] === apple[1]
+            ){
+                apple = null
+                history.pushState('', '', `${location.href}@`);
+            } else {
+            snake.pop()
+            }
+
+            ctx.fillStyle = 'red'
+            snake.forEach(([snake_X, snake_Y]) => 
+                ctx.fillRect(snake_X * PIXEL_SIZE, snake_Y * PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE)
+            )
+            
+        }
+
+    </script>
+
+</body>
+</html>
