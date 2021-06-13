@@ -1,3 +1,3 @@
 A quick snake game.  
 Minimal viability.  
-[Try.]:https://dimitrov-radostin.github.io/snake/
+[Try.]:(https://dimitrov-radostin.github.io/snake/)
