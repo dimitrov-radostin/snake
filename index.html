@@ -13,7 +13,8 @@
         const canv = document.getElementById('canv')
         const ctx = canv.getContext('2d')
         
-        const PIXEL_SIZE = 10 
+        const PIXEL_SIZE = 10
+        
         let [speed_X, speed_Y] = [0, 0] 
         let snake = Array(5).fill([20, 20])
         let apple
@@ -99,10 +100,8 @@
             snake.forEach(([snake_X, snake_Y]) => 
                 ctx.fillRect(snake_X * PIXEL_SIZE, snake_Y * PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE)
             )
-            
         }
 
     </script>
-
 </body>
 </html>
